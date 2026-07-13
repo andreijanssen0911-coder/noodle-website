@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍜 Buldak Noodle House - Menu & Orders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🍜 MENU</h1>
+            <p class="tagline">Creamy • Cheesy • Spicy • Support Our Research!</p>
+        </div>
+    </header>
+
+    <nav class="nav-buttons">
+        <button class="nav-btn active" onclick="showSection('menu')">View Menu</button>
+        <button class="nav-btn" onclick="showSection('order')">Order Now</button>
+        <button class="nav-btn" onclick="showSection('cart')">Cart (<span id="cart-count">0</span>)</button>
+    </nav>
+
+    <main>
+        <!-- Menu Section -->
+        <section id="menu" class="section active">
+            <div class="menu-container">
+                <!-- Best Seller -->
+                <div class="menu-item best-seller">
+                    <div class="badge">⭐ Best Seller</div>
+                    <h3>Samyang Carbonara Buldak</h3>
+                    <p class="description">Creamy, cheesy Korean spicy noodles</p>
+                    <div class="price">₱150</div>
+                    <button class="add-btn" onclick="addToCart('Samyang Carbonara Buldak', 150)">Add to Cart</button>
+                </div>
+
+                <!-- With Cheese & Nori -->
+                <div class="menu-item">
+                    <div class="badge heart">❤️ With Cheese & Nori</div>
+                    <h3>Buldak with Cheese & Nori</h3>
+                    <p class="description">Rich cheese blend with crispy nori seaweed</p>
+                    <div class="price">₱160</div>
+                    <button class="add-btn" onclick="addToCart('Buldak with Cheese & Nori', 160)">Add to Cart</button>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="menu-section-title">Add-ons</div>
+                <div class="menu-item add-on">
+                    <h3>Korean Spam</h3>
+                    <p class="description">Classic Korean spam strips</p>
+                    <div class="price">+₱20</div>
+                    <button class="add-btn" onclick="addToCart('Korean Spam', 20)">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Section -->
+        <section id="order" class="section">
+            <div class="order-container">
+                <h2>📦 Place Your Order</h2>
+                <form id="order-form">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="delivery">Delivery Date:</label>
+                        <input type="date" id="delivery" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Delivery Address:</label>
+                        <textarea id="address" rows="3" required></textarea>
+                    </div>
+                    <div class="info-box">
+                        <p><strong>📅 Note:</strong> Orders are delivered every week during school break.</p>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Order</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart" class="section">
+            <div class="cart-container">
+                <h2>🛒 Your Cart</h2>
+                <div id="cart-items"></div>
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">₱0</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">₱0</span>
+                    </div>
+                </div>
+                <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Buldak Noodle House | Support Our Research! | 🍜 Fresh & Delicious</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
