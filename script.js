@@ -1,7 +1,8 @@
 let cart = [];
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
 
 // Show/Hide sections
-function showSection(sectionId) {
+function showSection(sectionId, eventTarget) {
     // Hide all sections
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => section.classList.remove('active'));
@@ -11,10 +12,73 @@ function showSection(sectionId) {
     buttons.forEach(btn => btn.classList.remove('active'));
 
     // Show selected section
-    document.getElementById(sectionId).classList.add('active');
+    const destination = document.getElementById(sectionId);
+    if (destination) {
+        destination.classList.add('active');
+    }
 
-    // Add active class to clicked button
-    event.target.classList.add('active');
+    const clickedButton = eventTarget || (typeof event !== 'undefined' ? event.target : null);
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
+}
+
+function saveOrders() {
+    localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function formatDateTime(dateTimeString) {
+    const date = new Date(dateTimeString);
+    return date.toLocaleString([], {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function updateOrderHistoryUI() {
+    const orderHistoryContainer = document.getElementById('order-history');
+    if (!orderHistoryContainer) return;
+
+    orderHistoryContainer.innerHTML = '';
+
+    if (orders.length === 0) {
+        orderHistoryContainer.innerHTML = '<div class="order-history-empty">No orders yet. Place an order to see it here.</div>';
+        return;
+    }
+
+    orders.slice().reverse().forEach(order => {
+        const orderItem = document.createElement('div');
+        orderItem.className = 'order-history-item';
+        orderItem.innerHTML = `
+            <div class="order-history-header">
+                <div>
+                    <div><strong>Order #${order.id}</strong></div>
+                    <div class="order-history-meta">Placed on ${formatDateTime(order.createdAt)}</div>
+                </div>
+                <div class="order-history-meta">
+                    ${order.name} · ${order.email} · ${order.phone}
+                </div>
+            </div>
+            <div class="order-history-meta">Delivery date: ${order.delivery}</div>
+            <div class="order-history-meta">Address: ${order.address}</div>
+            <div class="order-history-items">
+                ${order.items.map(item => `
+                    <div class="order-history-item-entry">
+                        <span>${item.name}</span>
+                        <strong>₱${item.price}</strong>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="summary-row total" style="margin-top: 15px;">
+                <span>Total</span>
+                <span>₱${order.total}</span>
+            </div>
+        `;
+        orderHistoryContainer.appendChild(orderItem);
+    });
 }
 
 // Add to cart
@@ -120,6 +184,22 @@ document.addEventListener('DOMContentLoaded', function() {
             // Calculate total
             const total = cart.reduce((sum, item) => sum + item.price, 0);
 
+            const order = {
+                id: Date.now(),
+                name,
+                email,
+                phone,
+                delivery,
+                address,
+                items: cart.map(item => ({ name: item.name, price: item.price })),
+                total,
+                createdAt: new Date().toISOString()
+            };
+
+            orders.push(order);
+            saveOrders();
+            updateOrderHistoryUI();
+
             // Create order summary
             const orderSummary = `
                 Order Confirmation!
@@ -140,15 +220,17 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(orderSummary);
 
             // Show success message
-            alert(orderSummary + '\n\nThank you for your order! We will deliver during school break.');
+            alert(orderSummary + '\n\nThank you for your order! Your order has been saved to history.');
 
             // Reset form and cart
             orderForm.reset();
             cart = [];
             updateCartUI();
-            showSection('menu');
+            showSection('orders');
         });
     }
+
+    updateOrderHistoryUI();
 });
 
 // Notification system

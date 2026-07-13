@@ -15,9 +15,10 @@
     </header>
 
     <nav class="nav-buttons">
-        <button class="nav-btn active" onclick="showSection('menu')">View Menu</button>
-        <button class="nav-btn" onclick="showSection('order')">Order Now</button>
-        <button class="nav-btn" onclick="showSection('cart')">Cart (<span id="cart-count">0</span>)</button>
+        <button class="nav-btn active" onclick="showSection('menu', event)">View Menu</button>
+        <button class="nav-btn" onclick="showSection('order', event)">Order Now</button>
+        <button class="nav-btn" onclick="showSection('cart', event)">Cart (<span id="cart-count">0</span>)</button>
+        <button class="nav-btn" onclick="showSection('orders', event)">Orders</button>
     </nav>
 
     <main>
@@ -105,6 +106,13 @@
                 <button class="clear-btn" onclick="clearCart()">Clear Cart</button>
             </div>
         </section>
+
+        <section id="orders" class="section">
+            <div class="orders-container">
+                <h2>📜 Order History</h2>
+                <div id="order-history"></div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -114,3 +122,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
